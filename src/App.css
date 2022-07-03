@@ -33,3 +33,21 @@
 .tabs {
   margin: 20px 0px;
 }
+
+.pageButton{
+  margin:5px 15px 5px 0;
+  background-color: aliceblue;
+  color:rgb(24, 150, 150);
+}
+
+.container{
+  background-color: rgb(24, 150, 150);
+  border:8px solid rgb(150, 145, 145);
+  box-sizing: border-box;
+
+  
+}/* To add some more color, check csss too
+.headerStyla{
+  background-image: linear-gradient(to right, #47b501,#cf7806,#2e31e0, #eb00ff);
+}
+*/

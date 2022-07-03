@@ -5,6 +5,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Too add some color... check app.css too
+  background-image: linear-gradient(to right, #47b501,#cf7806,#2e31e0, #eb00ff);*/
 }
 
 code {

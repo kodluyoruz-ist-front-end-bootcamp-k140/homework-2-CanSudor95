@@ -1,17 +1,59 @@
 import React, { useEffect, useState } from "react"
 import { Button } from "../button"
 import { FormItem } from "../form-item"
+import Pagination from "../pagination/pagination"
 
 export function DataGrid() {
 
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage, setPostsPerPage] = useState(10);
 
-  const [todo, setTodo] = useState(null)
+  const [todo, setTodo] = useState(null);
+
+  const [sorting, setSorting] = useState("Increasing")
 
   useEffect(() => {
     loadData()
-  }, [])
+  }, [postsPerPage, setPostsPerPage])
+
+  //sorting
+
+  const sortingId = () => {
+    if (sorting === "Increasing") {
+      const sorted = [...items].sort((a, b) => (a.id < b.id ? -1 : 1));
+      setSorting("Decreasing");
+      setItems(sorted);
+    } else {
+      const sorted = [...items].sort((a, b) => (a.id > b.id ? -1 : 1));
+      setSorting("Increasing");
+      setItems(sorted);
+    }
+  };
+
+  const sortingTitle = () => {
+    if (sorting === "Increasing") {
+      const sorted = [...items].sort((a, b) => (a.title < b.title ? -1 : 1));
+      setSorting("Decreasing");
+      setItems(sorted);
+    } else {
+      const sorted = [...items].sort((a, b) => (a.title > b.title ? -1 : 1));
+      setSorting("Increasing");
+      setItems(sorted);
+    }
+  };
+  
+
+  //postları almak
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost =indexOfLastPost-postsPerPage;
+  const currentPosts = items.slice(indexOfFirstPost, indexOfLastPost);
+
+  //sayfayı değiştirmek
+
+  const paginate =(pageNumber) => setCurrentPage(pageNumber);
+
 
   const loadData = () => {
     setLoading(true)
@@ -29,7 +71,8 @@ export function DataGrid() {
   const renderBody = () => {
     return (
       <React.Fragment>
-        {items.sort((a, b) => b.id - a.id).map((item, i) => {
+        {/*{items.sort((a, b) => b.id - a.id).map((item, i) => {  ....önceki*/}
+        {currentPosts.sort((a, b) => a.id < b.id).map((item, i) => {
           return (
             <tr key={i}>
               <th scope="row" >{item.id}</th>
@@ -50,11 +93,21 @@ export function DataGrid() {
     return (
     <>
       <Button onClick={onAdd}>Ekle</Button>
+
+      {/* Sayfa başına gösterilecek verilerin dağılımını ayarlamak seçmek için..*/}
+      <div>
+      <h3 style={{color:"red"}}>Sayfa Sıralama</h3>
+      <button type="button" className="btn btn-outline-primary pageButton"onClick={()=>setPostsPerPage(()=>{return 50})}>50</button>
+      <button type="button" className="btn btn-outline-primary pageButton"onClick={()=>setPostsPerPage(()=>{return 75})}>75</button>
+      <button type="button" className="btn btn-outline-primary pageButton"onClick={()=>setPostsPerPage(()=>{return 100})}>100</button>
+      <button type="button" className="btn btn-outline-primary pageButton"onClick={()=>setPostsPerPage(()=>{return 200})}>200</button>
+      </div>
+
       <table className="table">
         <thead>
           <tr>
-            <th scope="col">#</th>
-            <th scope="col">Başlık</th>
+            <th scope="col" onClick={sortingId}>#</th>
+            <th scope="col"onClick={sortingTitle}>Başlık</th>
             <th scope="col">Durum</th>
             <th scope="col">Aksiyonlar</th>
           </tr>
@@ -63,6 +116,7 @@ export function DataGrid() {
           {renderBody()}
         </tbody>
       </table>
+      <Pagination postsPerPage={postsPerPage} totalPosts={items.length} paginate={paginate} />
     </>
     )
   }

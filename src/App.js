@@ -14,16 +14,15 @@ function App() {
 
   return (
     <div className="App">
-      <Header />
+      <Header className="headerStyla"/>
       {/* <ContactFormClassComponent /> */}
       <div className='container'>
-        <div className="btn-group tabs" role="group" ariaLabel="Basic example">
+          <div className="btn-group tabs" role="group" ariaLabel="Basic example">
           <Button onClick={() => setActiveTab("cls")} className={activeTab === "cls" ? "btn btn-primary" : "btn btn-default"}>Class Component</Button>
           <Button onClick={() => setActiveTab("fn")} className={activeTab === "fn" ? "btn btn-primary" : "btn btn-default"}>Fn Component</Button>
         </div>
         <br />
-        { activeTab == "fn" ? <DataGrid /> : <DataGridClsComponent />}
-      </div>
+        { activeTab == "fn" ? <DataGrid /> : <DataGridClsComponent />} </div>
     </div>
   );
 }
